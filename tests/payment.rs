@@ -1,4 +1,4 @@
-extern crate rust_indy_sdk_wrapper as indy;
+extern crate rust_libindy_wrapper as indy;
 #[macro_use]
 mod utils;
 
@@ -9,7 +9,7 @@ mod low_tests {
     use super::*;
 
     #[test]
-    fn create_payment_address_works() {
+    fn create_payment_address_works () {
         let wallet_name = r#"{"id":"create_payment_address_works"}"#;
         safe_wallet_create!(wallet_name);
         let handle = Wallet::open(wallet_name, DEFAULT_CREDENTIALS).unwrap();
