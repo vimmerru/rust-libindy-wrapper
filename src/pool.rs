@@ -19,10 +19,9 @@ impl Pool {
     ///
     /// # Arguments
     /// * `config_name` - Name of the pool ledger configuration.
-    /// * `config`  (optional)- Pool configuration json. if NULL, then default config will be used. Example:
+    /// * `config`  (required)- Pool configuration json. Example:
     /// {
-    ///     "genesis_txn": string (optional), A path to genesis transaction file. If NULL, then a default one will be used.
-    ///                    If file doesn't exists default one will be created.
+    ///     "genesis_txn": string (required), A path to genesis transaction file.
     /// }
     pub fn create_ledger_config(pool_name: &str, pool_config: Option<&str>) -> Result<(), ErrorCode> {
         let (receiver, command_handle, cb) = ClosureHandler::cb_ec();
@@ -36,10 +35,9 @@ impl Pool {
     ///
     /// # Arguments
     /// * `config_name` - Name of the pool ledger configuration.
-    /// * `config`  (optional)- Pool configuration json. if NULL, then default config will be used. Example:
+    /// * `config`  (required)- Pool configuration json. Example:
     /// {
-    ///     "genesis_txn": string (optional), A path to genesis transaction file. If NULL, then a default one will be used.
-    ///                    If file doesn't exists default one will be created.
+    ///     "genesis_txn": string (required), A path to genesis transaction file.
     /// }
     /// * `timeout` - the maximum time this function waits for a response
     pub fn create_ledger_config_timeout(pool_name: &str, pool_config: Option<&str>, timeout: Duration) -> Result<(), ErrorCode> {
@@ -54,7 +52,7 @@ impl Pool {
     ///
     /// # Arguments
     /// * `config_name` - Name of the pool ledger configuration.
-    /// * `config`  (optional)- Pool configuration json. if NULL, then default config will be used. Example:
+    /// * `config`  (required)- Pool configuration json. Example:
     /// * `closure` - the closure that is called when finished
     ///
     /// # Returns
@@ -398,4 +396,3 @@ impl Pool {
         })
     }
 }
-
