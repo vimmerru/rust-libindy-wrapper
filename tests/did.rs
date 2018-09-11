@@ -11,7 +11,7 @@ use indy::ErrorCode;
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use utils::b58::{FromBase58, IntoBase58};
-use utils::constants::{DID_1, SEED_1, VERKEY_1, METADATA};
+use utils::constants::{DID_1, SEED_1, VERKEY_1, METADATA, VERKEY_ABV_1};
 use utils::setup::{Setup, SetupConfig};
 use utils::wallet::Wallet;
 
@@ -1423,5 +1423,105 @@ mod test_get_endpoint {
         if false == test_succeeded {
             assert!(false, "get_endpoint_works failed set_endpoint {:?}", error_code);
         }
+    }
+}
+
+#[cfg(test)]
+mod test_abbreviate_verkey {
+    use super::*;
+
+    #[test]
+    fn abbreviate_verkey_abbreviated() {
+        let result = Did::abbreviate_verkey(DID_1, VERKEY_1);
+        assert_eq!(VERKEY_ABV_1, result.unwrap());
+    }
+
+    #[test]
+    fn abbreviate_verkey_full_verkey() {
+        let wallet = Wallet::new();
+        let config = json!({"did": DID_1}).to_string();
+
+        let (did, verkey) = Did::new(wallet.handle, &config).unwrap();
+
+        let result = Did::abbreviate_verkey(&did, &verkey);
+
+        assert_eq!(verkey, result.unwrap());
+    }
+
+    #[test]
+    fn abbreviate_verkey_invalid_did() {
+        let result = Did::abbreviate_verkey("InvalidDid", VERKEY_1);
+        assert_eq!(ErrorCode::CommonInvalidStructure, result.unwrap_err());
+    }
+
+    #[test]
+    fn abbreviate_verkey_invalid_verkey() {
+        let result = Did::abbreviate_verkey(DID_1, "InvalidVerkey");
+        assert_eq!(ErrorCode::CommonInvalidStructure, result.unwrap_err());
+    }
+
+    #[test]
+    fn abbreviate_verkey_async_abbreviated() {
+        let (sender, receiver) = channel();
+        
+        Did::abbreviate_verkey_async(
+            DID_1,
+            VERKEY_1,
+            move |ec, verkey| sender.send((ec, verkey)).unwrap()
+        );
+
+        let (ec, verkey) = receiver.recv_timeout(VALID_TIMEOUT).unwrap();
+
+        assert_eq!(ErrorCode::Success, ec);
+        assert_eq!(VERKEY_ABV_1, verkey);
+    }
+
+    #[test]
+    fn abbreviate_verkey_async_invalid_did() {
+        let (sender, receiver) = channel();
+
+        Did::abbreviate_verkey_async(
+            "InvalidDid",
+            VERKEY_1,
+            move |ec, verkey| sender.send((ec, verkey)).unwrap()
+        );
+
+        let (ec, verkey) = receiver.recv_timeout(VALID_TIMEOUT).unwrap();
+
+        assert_eq!(ErrorCode::CommonInvalidStructure, ec);
+        assert_eq!("", verkey);
+    }
+
+    #[test]
+    fn abbreviate_verkey_timeout_abbreviated() {
+        let result = Did::abbreviate_verkey_timeout(
+            DID_1,
+            VERKEY_1,
+            VALID_TIMEOUT
+        );
+
+        assert_eq!(VERKEY_ABV_1, result.unwrap());
+    }
+
+    #[test]
+    fn abbreviate_verkey_timeout_invalid_did() {
+        let result = Did::abbreviate_verkey_timeout(
+            "InvalidDid",
+            VERKEY_1,
+            VALID_TIMEOUT
+        );
+
+        assert_eq!(ErrorCode::CommonInvalidStructure, result.unwrap_err());
+    }
+
+    #[test]
+    fn abbreviate_verkey_timeout_timeouts() {
+        let result = Did::abbreviate_verkey_timeout(
+            DID_1,
+            VERKEY_1,
+            INVALID_TIMEOUT
+        );
+
+        assert_eq!(ErrorCode::CommonIOError, result.unwrap_err());
     }
 }
