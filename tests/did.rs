@@ -1765,3 +1765,13 @@ mod test_abbreviate_verkey {
         assert_eq!(ErrorCode::CommonIOError, result.unwrap_err());
     }
 }
+
+#[cfg(test)]
+mod test_get_my_metadata {
+    use super::*;
+
+    #[test]
+    pub fn get_my_metadata_success() {
+        
+    }
+}
