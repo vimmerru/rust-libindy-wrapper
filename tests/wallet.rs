@@ -28,7 +28,6 @@ const INVALID_TIMEOUT: Duration = Duration::from_micros(1);
 mod wallet_tests {
     use super::*;
 
-
     #[test]
     fn create_delete_wallet_works() {
         let wallet_name = r#"{"id":"create_delete_wallet_works"}"#;

@@ -4,10 +4,10 @@ extern crate rmp_serde;
 extern crate byteorder;
 extern crate rust_libindy_wrapper as indy;
 #[macro_use]
-mod utils;
+pub mod utils;
 
 use indy::wallet::Wallet;
-use utils::constants::{DEFAULT_CREDENTIALS, DID};
+use utils::constants::{DEFAULT_CREDENTIALS, DID_1};
 use utils::setup::{Setup, SetupConfig};
 use std::time::Duration;
 use std::sync::mpsc::channel;
@@ -15,6 +15,7 @@ use indy::ErrorCode;
 use indy::pool::Pool;
 use utils::pool;
 
+#[cfg(test)]
 mod open_pool {
     use super::*;
 
@@ -433,7 +434,7 @@ mod open_pool {
     }
 }
 
-
+#[cfg(test)]
 mod close_pool {
     use super::*;
 
@@ -640,7 +641,7 @@ mod close_pool {
 
         let pool_handle = indy::pool::Pool::open_ledger(&setup.pool_name, None).unwrap();
 
-        let get_nym_req = indy::ledger::Ledger::build_get_nym_request(DID, DID).unwrap();
+        let get_nym_req = indy::ledger::Ledger::build_get_nym_request(DID_1, DID_1).unwrap();
 
         let (sender, receiver) = channel();
 
@@ -669,7 +670,7 @@ mod close_pool {
 
         let pool_handle = indy::pool::Pool::open_ledger(&setup.pool_name, None).unwrap();
 
-        let get_nym_req = indy::ledger::Ledger::build_get_nym_request(DID, DID).unwrap();
+        let get_nym_req = indy::ledger::Ledger::build_get_nym_request(DID_1, DID_1).unwrap();
 
         let (sender, receiver) = channel();
 
@@ -704,7 +705,7 @@ mod close_pool {
 
         let pool_handle = indy::pool::Pool::open_ledger(&setup.pool_name, None).unwrap();
 
-        let get_nym_req = indy::ledger::Ledger::build_get_nym_request(DID, DID).unwrap();
+        let get_nym_req = indy::ledger::Ledger::build_get_nym_request(DID_1, DID_1).unwrap();
 
         let (sender, receiver) = channel();
 
@@ -1162,7 +1163,6 @@ mod test_set_protocol_version {
     }
 }
 
-
 #[cfg(test)]
 /*
 The sync Pool::list is already tested by the create tests.
@@ -1208,6 +1208,7 @@ mod test_pool_list {
     }
 }
 
+#[cfg(test)]
 mod test_refresh_works {
     use super::*;
 
