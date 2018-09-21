@@ -11,12 +11,10 @@ use indy::ErrorCode;
 use std::sync::mpsc::channel;
 use std::time::Duration;
 use utils::b58::{FromBase58, IntoBase58};
-use utils::constants::{DID_1, SEED_1, VERKEY_1, METADATA, VERKEY_ABV_1};
+use utils::constants::{DID_1, INVALID_TIMEOUT, METADATA, SEED_1, VALID_TIMEOUT, VERKEY_1, VERKEY_ABV_1};
 use utils::setup::{Setup, SetupConfig};
 use utils::wallet::Wallet;
 
-const VALID_TIMEOUT: Duration = Duration::from_secs(5);
-const INVALID_TIMEOUT: Duration = Duration::from_micros(1);
 const INVALID_HANDLE: i32 = 583741;
 
 #[inline]

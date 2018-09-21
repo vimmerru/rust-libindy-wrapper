@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 pub const DEFAULT_CREDENTIALS: &str = r#"{"key":""}"#;
 pub const DID_1: &str = "VsKV7grR1BUE29mG2Fm2kX";
 pub const EXPORT_KEY: &str = "export_key";
@@ -11,3 +13,5 @@ pub const DID: &str = "8wZcEriaNLNKtteJvx7f8i";
 pub const DID_TRUSTEE: &str = "V4SGRU86Z58d6TV7PBUe6f";
 pub const VERKEY_TRUSTEE: &str = "GJ1SzoWzavQYfNL9XkaJdrQejfztN4XqdsiV4ct3LXKL";
 pub const METADATA: &str = "some_metadata";
+pub const VALID_TIMEOUT: Duration = Duration::from_secs(5);
+pub const INVALID_TIMEOUT: Duration = Duration::from_micros(1);
