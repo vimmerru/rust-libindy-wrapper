@@ -368,3 +368,13 @@ impl From<mpsc::RecvError> for ErrorCode {
         ErrorCode::CommonIOError
     }
 }
+
+impl std::fmt::Display for ErrorCode {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Indy Error: {} {}", self, self.description())
+    }
+}
+
+impl ::std::error::Error for ErrorCode {
+
+}
